@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Real Zugradar</title>
+	<meta name="author" content="Jannis R &lt;mail@jannisr.de&gt;"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	<style type="text/css">
+		body {margin: 0}
+		#map {height: 100vh}
+	</style>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
+</head>
+<body>
+	<div id="map"></div>
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	<script>
+		const map = L.map('map').setView([51.3, 13.4], 13)
+		L.tileLayer('http://c.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+			maxZoom: 18,
+			id: 'com.derhuerst.ice-tracker'
+		}).addTo(map)
+
+		const train = L.marker([52, 13]).addTo(map)
+		train.bindPopup('foo').openPopup()
+		const label = train.getPopup()
+
+		const ws = new WebSocket('ws://ice.juliuste.de:62315')
+		ws.onerror = console.error
+		ws.onmessage = (m) => {
+			const data = JSON.parse(m.data)
+			label.setContent(data.line)
+			train.setLatLng([data.latitude, data.longitude])
+			map.setView([data.latitude, data.longitude], 16)
+		}
+	</script>
+</body>
+</html>
