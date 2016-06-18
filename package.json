@@ -1,0 +1,8 @@
+{
+	"name": "ice-tracker",
+	"version": "1.0.0",
+	"description": "Show Inter City Express trains on a map.",
+	"main": "index.html",
+	"author": "Jannis R <mail@jannisr.de>",
+	"license": "ISC"
+}
